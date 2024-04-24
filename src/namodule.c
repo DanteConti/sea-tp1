@@ -27,18 +27,21 @@ int main(int argc, char *argv[]){
 	   continue;
 
        family = ifa->ifa_addr->sa_family;
+       if(family == AF_PACKET)
+	   continue;
 
        /* Display interface name and family (including symbolic
 	  form of the latter for the common families). */
-
-       printf("%-8s %s (%d)\n",
+       printf("%-6s %s (%d)\n",
 	      ifa->ifa_name,
 	      (family == AF_PACKET) ? "AF_PACKET" :
-	      (family == AF_INET) ? "AF_INET" :
-	      (family == AF_INET6) ? "AF_INET6" : "???",
+	      (family == AF_INET) ? "IPV4" :
+	      (family == AF_INET6) ? "IPV6" : "???",
 	      family);
 
        /* For an AF_INET* interface address, display the address. */
+
+       int sep = 15;
 
        if (family == AF_INET || family == AF_INET6) {
 	   s = getnameinfo(ifa->ifa_addr,
@@ -51,15 +54,20 @@ int main(int argc, char *argv[]){
 	       exit(EXIT_FAILURE);
 	   }
 
-	   printf("\t\taddress: <%s>\n", host);
+	   printf("%*s %s\n", sep, "address:", host);
 
-       } else if (family == AF_PACKET && ifa->ifa_data != NULL) {
-	   struct rtnl_link_stats *stats = ifa->ifa_data;
+	   s = getnameinfo(ifa->ifa_netmask,
+		   (family == AF_INET) ? sizeof(struct sockaddr_in) :
+					 sizeof(struct sockaddr_in6),
+		   host, NI_MAXHOST,
+		   NULL, 0, NI_NUMERICHOST);
+	   if (s != 0) {
+	       printf("getnameinfo() failed: %s\n", gai_strerror(s));
+	       exit(EXIT_FAILURE);
+	   }
 
-	   printf("\t\ttx_packets = %10u; rx_packets = %10u\n"
-		  "\t\ttx_bytes   = %10u; rx_bytes   = %10u\n",
-		  stats->tx_packets, stats->rx_packets,
-		  stats->tx_bytes, stats->rx_bytes);
+	   printf("%*s %s\n\n", sep, "netmask:", host);
+
        }
    }
 
