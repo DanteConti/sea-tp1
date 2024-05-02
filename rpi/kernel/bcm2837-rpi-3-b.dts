@@ -163,4 +163,9 @@
             //vddd-supply = <&foo>;
             //vdda-supply = <&bar>;
         };
+
+	htu21@40{
+            compatible = "meas,htu21";
+            reg = <0x40>;
+	};
 };
