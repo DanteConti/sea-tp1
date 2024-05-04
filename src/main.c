@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include "inc/systeminfo_dante.h"
 
-const char* filePath = "/var/www/htmlUpdate";
-const char* updaterPath = "/updateHtml.sh";
+const char* htmlUpdatePath = "/var/www/htmlUpdate";
+const char* updateHtmlPath = "/updateHtml.sh";
 
 void printInfo(char **info, int len){
   for(size_t i=0; i<len; i++){
@@ -31,10 +31,10 @@ int main(int argc, char *argv[]){
   char **cpuinfo = malloc(sizeof(char *) * cpuinfolc);
   FILE *updateHtml_ptr;
   
-  // obtener informacion placa de red y guardarla en filePath
+  // obtener informacion placa de red y guardarla en htmlUpdatePath
   na_get_adaptersInfo(adaptersInfo, adapterqty);
   printInfo(adaptersInfo, adapterqty);
-  updateHtml_ptr = fopen(filePath, "w+");
+  updateHtml_ptr = fopen(htmlUpdatePath, "w+");
   if(!updateHtml_ptr){
     printf("Error en lectura/creación archivo updateHtml\n");
     exit(EXIT_FAILURE);
@@ -42,10 +42,10 @@ int main(int argc, char *argv[]){
   saveToFile(updateHtml_ptr, adaptersInfo, adapterqty);
   fclose(updateHtml_ptr);
   
-  // obtener informacion de cpuinfo y guardarla en filepath
+  // obtener informacion de cpuinfo y guardarla en htmlUpdatePath
   cpu_get_info("/proc/cpuinfo", cpuinfo, cpuinfolc);
   printInfo(cpuinfo, cpuinfolc);
-  updateHtml_ptr = fopen(filePath, "a");
+  updateHtml_ptr = fopen(htmlUpdatePath, "a");
   if(!updateHtml_ptr){
     printf("Error en lectura/creación archivo updateHtml\n");
     exit(EXIT_FAILURE);
@@ -58,7 +58,7 @@ int main(int argc, char *argv[]){
   liberarPunteros(cpuinfo, cpuinfolc);
   
   // correr script para actualizar index.html
-  system(updaterPath);
+  system(updateHtmlPath);
 
   // leer periodicamente sensor y enviar lectura por puerto serie
   
