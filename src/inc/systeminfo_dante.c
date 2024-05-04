@@ -10,6 +10,8 @@
 #include <unistd.h>
 #include <linux/if_link.h>
 
+size_t maxSz = 120;
+
 /* Funciones privadas */
 void getAdaptersInfo(char **dest){
   struct ifaddrs *ifaddr;
@@ -122,18 +124,56 @@ int na_get_adaptersCount(){
 }
 
 void na_get_adaptersInfo(char **info, int len){
-  const size_t maxSz = 120;
-  
   if(info){
     for(size_t i=0; i<len; i++){
       info[i] = (char*)malloc(maxSz);
     }
     getAdaptersInfo(info);
-    for(size_t i=0; i<len; i++){
-      puts(info[i]);
-    }
   }else{
     printf("Error reservando memoria para info adaptadores de red\n");
+    exit(EXIT_FAILURE);
   }
 }
 
+int cpu_get_lineCount(char *filePath){ 
+  int size = 0;
+  char *line = NULL;
+  FILE *fptr = fopen(filePath, "r");
+  
+  if(fptr == NULL){
+      printf("can't open file!\n");
+      exit(EXIT_FAILURE);
+  }
+  while(getline(&line, &maxSz, fptr) != -1){
+    size++;
+  }
+  fclose(fptr);
+  
+  return(size);
+}
+
+void cpu_get_info(char *filePath, char **info, int len){
+  char *line = NULL;
+  FILE *fptr = fopen(filePath, "r");
+  
+  if(info){
+    for(size_t i=0; i<len; i++){
+      info[i] = (char*)malloc(maxSz);
+    }
+    if(fptr == NULL){
+        printf("can't open file!\n");
+        for(size_t i=0; i<len; i++){
+          free(info[i]);
+        }
+        exit(EXIT_FAILURE);
+    }
+    int i=0;
+    while(getline(&line, &maxSz, fptr) != -1){
+      strcpy(info[i], line);
+      i++;
+    }
+  }else{
+    printf("Error reservando memoria para info de cpu\n");
+    exit(EXIT_FAILURE);
+  }
+}
