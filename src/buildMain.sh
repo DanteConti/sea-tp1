@@ -2,4 +2,4 @@
 
 incDir="$(pwd)/inc"
 
-gcc -g main.c -I${incDir} ${incDir}/**.c -o ../bin/main.o
+${CROSS_COMPILE}gcc -static main.c -I${incDir} ${incDir}/**.c -o ../bin/main.o

@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include "inc/systeminfo_dante.h"
 
-const char* filePath = "update";
+const char* filePath = "/var/www/htmlUpdate";
+const char* updaterPath = "/updateHtml.sh";
 
 void printInfo(char **info, int len){
   for(size_t i=0; i<len; i++){
@@ -56,6 +57,9 @@ int main(int argc, char *argv[]){
   liberarPunteros(adaptersInfo, adapterqty);
   liberarPunteros(cpuinfo, cpuinfolc);
   
+  // correr script para actualizar index.html
+  system(updaterPath);
+
   // leer periodicamente sensor y enviar lectura por puerto serie
   
   
