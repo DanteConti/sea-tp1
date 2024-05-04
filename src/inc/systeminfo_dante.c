@@ -26,14 +26,12 @@ void getAdaptersInfo(char **dest){
   static size_t adapterCount = 0;
   for (struct ifaddrs *ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
 
-    char *msg, *aux, *destAux;    
+    char *msg, *aux;    
     size_t sz;
 
     family = ifa->ifa_addr->sa_family;
     if (ifa->ifa_addr == NULL || family == AF_PACKET)
       continue;
-
-    destAux = *(dest+adapterCount);
 
     // obtener nombre y tipo del adaptador
     sz = snprintf(NULL, 0, "%-6s %s (%d)\n",
