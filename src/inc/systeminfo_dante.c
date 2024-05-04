@@ -34,15 +34,13 @@ void getAdaptersInfo(char **dest){
       continue;
 
     // obtener nombre y tipo del adaptador
-    sz = snprintf(NULL, 0, "%-6s %s (%d)\n",
+    sz = snprintf(NULL, 0, "%-6s %s\n",
     ifa->ifa_name,
-    (family == AF_INET) ? "IPV4" : "???",
-    family);
+    (family == AF_INET) ? "ipv4 if:" : "???");
     msg = (char *)malloc(sz+1);
-    snprintf(msg, sz+1, "%-6s %s (%d)\n",
+    snprintf(msg, sz+1, "%-6s %s\n",
     ifa->ifa_name,
-    (family == AF_INET) ? "IPV4" : "???",
-    family);
+    (family == AF_INET) ? "ipv4 if:" : "???");
 
     int sep = 15;
 

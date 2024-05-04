@@ -39,6 +39,7 @@ int main(int argc, char *argv[]){
     printf("Error en lectura/creación archivo updateHtml\n");
     exit(EXIT_FAILURE);
   }
+  fprintf(updateHtml_ptr, "Información de placas de red\n");
   saveToFile(updateHtml_ptr, adaptersInfo, adapterqty);
   fclose(updateHtml_ptr);
   
@@ -50,6 +51,7 @@ int main(int argc, char *argv[]){
     printf("Error en lectura/creación archivo updateHtml\n");
     exit(EXIT_FAILURE);
   }
+  fprintf(updateHtml_ptr, "\nInformación del cpu\n");
   saveToFile(updateHtml_ptr, cpuinfo, cpuinfolc);
   fclose(updateHtml_ptr);
   
