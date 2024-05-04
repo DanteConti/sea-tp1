@@ -30,28 +30,26 @@ void getAdaptersInfo(char **dest){
     size_t sz;
 
     family = ifa->ifa_addr->sa_family;
-    if (ifa->ifa_addr == NULL || family == AF_PACKET)
+    if (ifa->ifa_addr == NULL || family == AF_PACKET || family == AF_INET6)
       continue;
 
     // obtener nombre y tipo del adaptador
     sz = snprintf(NULL, 0, "%-6s %s (%d)\n",
     ifa->ifa_name,
-    (family == AF_INET) ? "IPV4" :
-    (family == AF_INET6) ? "IPV6" : "???",
+    (family == AF_INET) ? "IPV4" : "???",
     family);
     msg = (char *)malloc(sz+1);
     snprintf(msg, sz+1, "%-6s %s (%d)\n",
     ifa->ifa_name,
-    (family == AF_INET) ? "IPV4" :
-    (family == AF_INET6) ? "IPV6" : "???",
+    (family == AF_INET) ? "IPV4" : "???",
     family);
 
     int sep = 15;
 
-    if (family == AF_INET || family == AF_INET6) {
+    if (family == AF_INET) {
       // obtener direccion ip
       s = getnameinfo(ifa->ifa_addr,
-      (family == AF_INET) ? sizeof(struct sockaddr_in) : sizeof(struct sockaddr_in6),
+      sizeof(struct sockaddr_in),
       host, NI_MAXHOST,
       NULL, 0, NI_NUMERICHOST);
       
@@ -67,8 +65,7 @@ void getAdaptersInfo(char **dest){
 
       // obtener mascara subred
       s = getnameinfo(ifa->ifa_netmask,
-      (family == AF_INET) ? sizeof(struct sockaddr_in) :
-      sizeof(struct sockaddr_in6),
+      sizeof(struct sockaddr_in),
       host, NI_MAXHOST,
       NULL, 0, NI_NUMERICHOST);
       
@@ -111,7 +108,7 @@ int na_get_adaptersCount(){
   for (struct ifaddrs *ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
 
     family = ifa->ifa_addr->sa_family;
-    if (ifa->ifa_addr == NULL || family == AF_PACKET){
+    if (ifa->ifa_addr == NULL || family == AF_PACKET || family == AF_INET6){
       continue;
     }else{
        adaptersCount++;
