@@ -5,6 +5,9 @@
 const char* htmlUpdatePath = "/var/www/htmlUpdate";
 const char* updateHtmlPath = "/updateHtml.sh";
 const char* configHtmlPath = "/configHtml.sh";
+const char* serialPort = "/dev/ttyS0";
+const char* getHumidityPath = "/custDev/htu21_get_humidityrelative";
+const char* getTempPath = "/custDev/htu21_get_temp";
 
 void printInfo(char **info, int len){
   for(size_t i=0; i<len; i++){
@@ -65,7 +68,8 @@ int main(int argc, char *argv[]){
   system(updateHtmlPath);
 
   // leer periodicamente sensor y enviar lectura por puerto serie
-  
+  float temp, humidity;
+  humidity = getHumidity(getHumidityPath);
   
   return(0);
 }
