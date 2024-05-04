@@ -4,6 +4,7 @@
 
 const char* htmlUpdatePath = "/var/www/htmlUpdate";
 const char* updateHtmlPath = "/updateHtml.sh";
+const char* configHtmlPath = "/configHtml.sh";
 
 void printInfo(char **info, int len){
   for(size_t i=0; i<len; i++){
@@ -39,7 +40,7 @@ int main(int argc, char *argv[]){
     printf("Error en lectura/creación archivo updateHtml\n");
     exit(EXIT_FAILURE);
   }
-  fprintf(updateHtml_ptr, "Información de placas de red\n");
+  fprintf(updateHtml_ptr, "Informacion de placas de red\n");
   saveToFile(updateHtml_ptr, adaptersInfo, adapterqty);
   fclose(updateHtml_ptr);
   
@@ -51,7 +52,7 @@ int main(int argc, char *argv[]){
     printf("Error en lectura/creación archivo updateHtml\n");
     exit(EXIT_FAILURE);
   }
-  fprintf(updateHtml_ptr, "\nInformación del cpu\n");
+  fprintf(updateHtml_ptr, "\nInformacion del cpu\n");
   saveToFile(updateHtml_ptr, cpuinfo, cpuinfolc);
   fclose(updateHtml_ptr);
   
@@ -59,7 +60,8 @@ int main(int argc, char *argv[]){
   liberarPunteros(adaptersInfo, adapterqty);
   liberarPunteros(cpuinfo, cpuinfolc);
   
-  // correr script para actualizar index.html
+  // correr scripts para actualizar index.html
+  system(configHtmlPath);
   system(updateHtmlPath);
 
   // leer periodicamente sensor y enviar lectura por puerto serie
