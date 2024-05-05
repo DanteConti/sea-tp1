@@ -1,7 +1,7 @@
 #ifndef __SENSORHANDLER__
 #define __SENSORHANDLER__
 
-float getTemp(char*);
-float getHumidity(char*);
+float sensorGet(const char*);
+void serialWrite(const char*, float, char*);
 
 #endif

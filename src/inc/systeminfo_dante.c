@@ -112,6 +112,7 @@ int na_get_adaptersCount(){
        adaptersCount++;
     }
   }
+  freeifaddrs(ifaddr);
 
   return(adaptersCount);
 }
@@ -150,21 +151,19 @@ void cpu_get_info(char *filePath, char **info, int len){
   FILE *fptr = fopen(filePath, "r");
   
   if(info){
-    for(size_t i=0; i<len; i++){
-      info[i] = (char*)malloc(maxSz);
-    }
-    if(fptr == NULL){
+    if(fptr != NULL){
+      for(size_t i=0; i<len; i++){
+        info[i] = (char*)malloc(maxSz);
+      }
+      int i=0;
+      while(getline(&line, &maxSz, fptr) != -1){
+        strcpy(info[i], line);
+        i++;
+      }
+    }else{
         printf("can't open file!\n");
-        for(size_t i=0; i<len; i++){
-          free(info[i]);
-        }
         exit(EXIT_FAILURE);
-    }
-    int i=0;
-    while(getline(&line, &maxSz, fptr) != -1){
-      strcpy(info[i], line);
-      i++;
-    }
+    }  
   }else{
     printf("Error reservando memoria para info de cpu\n");
     exit(EXIT_FAILURE);

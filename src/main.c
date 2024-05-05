@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "inc/systeminfo_dante.h"
+#include "inc/sensorHandler.h"
 
 const char* htmlUpdatePath = "/var/www/htmlUpdate";
 const char* updateHtmlPath = "/updateHtml.sh";
@@ -35,9 +37,11 @@ int main(int argc, char *argv[]){
   char **cpuinfo = malloc(sizeof(char *) * cpuinfolc);
   FILE *updateHtml_ptr;
   
+  printf("Actualizando informacion en servidor http...\n");
+
   // obtener informacion placa de red y guardarla en htmlUpdatePath
   na_get_adaptersInfo(adaptersInfo, adapterqty);
-  printInfo(adaptersInfo, adapterqty);
+  //printInfo(adaptersInfo, adapterqty);
   updateHtml_ptr = fopen(htmlUpdatePath, "w+");
   if(!updateHtml_ptr){
     printf("Error en lectura/creación archivo updateHtml\n");
@@ -49,7 +53,7 @@ int main(int argc, char *argv[]){
   
   // obtener informacion de cpuinfo y guardarla en htmlUpdatePath
   cpu_get_info("/proc/cpuinfo", cpuinfo, cpuinfolc);
-  printInfo(cpuinfo, cpuinfolc);
+  //printInfo(cpuinfo, cpuinfolc);
   updateHtml_ptr = fopen(htmlUpdatePath, "a");
   if(!updateHtml_ptr){
     printf("Error en lectura/creación archivo updateHtml\n");
@@ -67,9 +71,17 @@ int main(int argc, char *argv[]){
   system(configHtmlPath);
   system(updateHtmlPath);
 
+  printf("Leyendo datos del sensor HTU21...\n");
+
   // leer periodicamente sensor y enviar lectura por puerto serie
   float temp, humidity;
-  humidity = getHumidity(getHumidityPath);
-  
+  for(int i=0;i<10;i++){
+    humidity=sensorGet(getHumidityPath);
+    temp = sensorGet(getTempPath);
+    serialWrite(serialPort, humidity, "%");  
+    serialWrite(serialPort, temp, "ºC");
+    sleep(2);
+  }
+
   return(0);
 }
