@@ -21,11 +21,13 @@ Se compila el fuente de manera estática.
 
 1. Entrar al directorio `src/`.
 2. Correr script `buildMain.sh` para compilar el fuente de la aplicación. Se puede correr de dos maneras:
+
     2.a. Pasando una ruta como parámetro. En este caso copia el archivo compilado `tp1main.o` a la ruta especificada.
     Ejemplo de uso:
     ```
     ./buildMain.sh <ruta/absoluta/destino>
     ```
+    
     2.b. No pasarle ningún argumento. En este caso el archivo compilado queda en el directorio `bin/`.
 
 **Nota**. Si no se encuentra definida la variable *CROSS_COMPILE*, se va a compilar el fuente de la aplicación para la arquitectura nativa de la computadora que lo esté corriendo. Esto puede ser útil para testear el código. En caso de que se quiera testearlo, tener en cuenta modificar las rutas definidas en el archivo `src/main.c`.
