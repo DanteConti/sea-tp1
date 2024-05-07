@@ -1,5 +1,5 @@
-#ifndef __SYSTEMINFODANTE__
-#define __SYSTEMINFODANTE__
+#ifndef __SYSTEMINFO__
+#define __SYSTEMINFO__
 
 #include <stdlib.h>
 

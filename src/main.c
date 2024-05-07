@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "inc/systeminfo_dante.h"
+#include "inc/systeminfo.h"
 #include "inc/sensorHandler.h"
 
 const char* htmlUpdatePath = "/var/www/htmlUpdate";

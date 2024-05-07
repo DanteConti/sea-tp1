@@ -1,4 +1,4 @@
-#include "systeminfo_dante.h"
+#include "systeminfo.h"
 #define _GNU_SOURCE     /* To get defns of NI_MAXSERV and NI_MAXHOST */
 #include <arpa/inet.h>
 #include <sys/socket.h>
